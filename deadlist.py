@@ -17,7 +17,7 @@ def clear():
   if (exit_code != 0):
     raise Exception("Unexpected clear response code: {0}".format(exit_code))
 
-    
+
 # Login to Grateful Dead 1960s show listing
 def login():
   shows = Shows(show_files=[
@@ -35,18 +35,27 @@ def login():
     print('  5 - Quit')
     print()
 
-    action = int(input('> '))
-    clear()
+    try:
+      action = int(input('> '))
+      clear()
 
-    if (action == 1):
-      print(shows)
-    elif (action == 2):
-      date = input("Input a date (like 1967/01/06): ")
-      shows.remove(date)
-      print("\nShow for {0} has been removed.".format(date))
-    elif (action == 3):
-      print("\nThere are '{0}' shows.".format(shows.count()))
-    elif (action == 5):
-      break
-    else:
-      print("There is no '{0}' as an option; try again.".format(action))
+      if (action == 1):
+        print(shows)
+      elif (action == 2):
+        date = input("Input a date (like 1967/01/06): ")
+
+        try:
+          shows.remove(date)
+          print("\nShow for {0} has been removed.".format(date))
+        except ValueError as error:
+          print()
+          print(error)
+      elif (action == 3):
+        print("\nThere are '{0}' shows.".format(shows.count()))
+      elif (action == 5):
+        break
+      else:
+        print("There is no '{0}' as an option; try again.".format(action))
+    except ValueError as error:
+      clear()
+      print(error)
